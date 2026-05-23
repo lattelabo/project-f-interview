@@ -844,6 +844,12 @@
   function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
+  // ── 初期状態：オレンジ（選択モード）でスタート ──
+  window.addEventListener('DOMContentLoaded', () => {
+    selectToggle.checked = true;
+    selectToggle.dispatchEvent(new Event('change'));
+  });
 </script>
 </body>
 </html>
