@@ -159,6 +159,8 @@
       margin-bottom: 20px;
       overflow: hidden;
       transition: border-color 0.25s, box-shadow 0.25s, transform 0.15s;
+      display: flex;
+      flex-direction: column;
     }
     .q-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,58,237,0.1); }
     .q-card.selected {
@@ -229,7 +231,7 @@
 
     /* sub questions */
     .q-subs {
-      padding: 14px 22px 22px 78px;
+      padding: 6px 22px 22px 78px;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -388,11 +390,13 @@
 
     /* ===== REACTIONS (interviewer only) ===== */
     .q-reactions {
-      padding: 0 22px 20px 78px;
+      order: 1;
+      padding: 10px 22px 6px 78px;
       display: flex;
       flex-direction: column;
       gap: 8px;
     }
+    .q-subs { order: 2; }
     .q-reactions-label {
       font-size: 12px;
       font-weight: 700;
