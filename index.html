@@ -386,9 +386,44 @@
     }
     .section-label hr { flex: 1; border: none; border-top: 1px solid var(--border); }
 
+    /* ===== REACTIONS (interviewer only) ===== */
+    .q-reactions {
+      padding: 0 22px 20px 78px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .q-reactions-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--sub);
+      letter-spacing: 0.5px;
+    }
+    .q-reaction-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .q-reaction-chip {
+      background: #F3F4F6;
+      color: #374151;
+      border: 1.5px solid #E5E7EB;
+      border-radius: 999px;
+      padding: 5px 13px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .q-card.active-question .q-reaction-chip {
+      background: #FEF3C7;
+      border-color: #FDE68A;
+      color: #92400E;
+    }
+    body.select-mode .q-reactions { display: none; }
+
     /* responsive */
     @media (max-width: 480px) {
       .q-subs { padding-left: 22px; }
+      .q-reactions { padding-left: 22px; }
       .hero { padding: 36px 16px 32px; }
     }
 
@@ -495,6 +530,14 @@
       <div class="q-sub-item">入ってみて、元は取れた感覚ありますか？</div>
       <div class="q-sub-item">もし入ってなかったら、今どうなってたと思いますか？</div>
     </div>
+    <div class="q-reactions">
+      <div class="q-reactions-label">💬 出てきやすい言葉</div>
+      <div class="q-reaction-chips">
+        <span class="q-reaction-chip">「高っ！！」</span>
+        <span class="q-reaction-chip">「え、これ円？」</span>
+        <span class="q-reaction-chip">「無理でしょ笑」</span>
+      </div>
+    </div>
   </div>
 
   <!-- Q2 -->
@@ -516,6 +559,14 @@
       <div class="q-sub-item">押せた決め手って何でしたか？</div>
       <div class="q-sub-item">入った今、あの決断を後悔してますか？</div>
       <div class="q-sub-item">背中を押してくれたものって何でしたか？</div>
+    </div>
+    <div class="q-reactions">
+      <div class="q-reactions-label">💬 出てきやすい言葉</div>
+      <div class="q-reaction-chips">
+        <span class="q-reaction-chip">「30分押せなかった」</span>
+        <span class="q-reaction-chip">「夫に言えなかった」</span>
+        <span class="q-reaction-chip">「震えた」</span>
+      </div>
     </div>
   </div>
 
@@ -539,6 +590,14 @@
       <div class="q-sub-item">自分のレベルでもついていけましたか？</div>
       <div class="q-sub-item">今、コミュニティの中での自分の立ち位置ってどう感じてますか？</div>
     </div>
+    <div class="q-reactions">
+      <div class="q-reactions-label">💬 出てきやすい言葉</div>
+      <div class="q-reaction-chips">
+        <span class="q-reaction-chip">「場違いすぎる」</span>
+        <span class="q-reaction-chip">「レベル違いすぎて浮くかも」</span>
+        <span class="q-reaction-chip">「私だけ初心者」</span>
+      </div>
+    </div>
   </div>
 
   <!-- Q4 -->
@@ -560,6 +619,14 @@
       <div class="q-sub-item">不安が消えたのってどのタイミングでしたか？</div>
       <div class="q-sub-item">入って最初に「あ、本物だ」と思った瞬間はありましたか？</div>
       <div class="q-sub-item">今、誰かに勧めたいと思いますか？</div>
+    </div>
+    <div class="q-reactions">
+      <div class="q-reactions-label">💬 出てきやすい言葉</div>
+      <div class="q-reaction-chips">
+        <span class="q-reaction-chip">「あ、詐欺られた？」</span>
+        <span class="q-reaction-chip">「本当にこれで合ってる？」</span>
+        <span class="q-reaction-chip">「ロムってたら無駄じゃん」</span>
+      </div>
     </div>
   </div>
 
@@ -583,6 +650,14 @@
       <div class="q-sub-item">成果が出たとき、周りの反応は変わりましたか？</div>
       <div class="q-sub-item">入ってよかったと、自分で納得できてますか？</div>
     </div>
+    <div class="q-reactions">
+      <div class="q-reactions-label">💬 出てきやすい言葉</div>
+      <div class="q-reaction-chips">
+        <span class="q-reaction-chip">「絶対引かれると思った」</span>
+        <span class="q-reaction-chip">「旦那には内緒にした」</span>
+        <span class="q-reaction-chip">「"また？"って言われた」</span>
+      </div>
+    </div>
   </div>
 
   <!-- Q6 -->
@@ -604,6 +679,14 @@
       <div class="q-sub-item">実際のコミュニティの雰囲気ってどうでしたか？</div>
       <div class="q-sub-item">メンバーとの関係で印象に残ってることはありますか？</div>
       <div class="q-sub-item">居心地って実際どうですか？</div>
+    </div>
+    <div class="q-reactions">
+      <div class="q-reactions-label">💬 出てきやすい言葉</div>
+      <div class="q-reaction-chips">
+        <span class="q-reaction-chip">「ギラギラしてそう」</span>
+        <span class="q-reaction-chip">「自慢大会じゃないの？」</span>
+        <span class="q-reaction-chip">「馴染めない気がした」</span>
+      </div>
     </div>
   </div>
 
@@ -627,6 +710,14 @@
       <div class="q-sub-item">続けられている理由って何だと思いますか？</div>
       <div class="q-sub-item">コミュニティのどんな仕組みが自分を動かしてくれましたか？</div>
     </div>
+    <div class="q-reactions">
+      <div class="q-reactions-label">💬 出てきやすい言葉</div>
+      <div class="q-reaction-chips">
+        <span class="q-reaction-chip">「どうせ幽霊になる」</span>
+        <span class="q-reaction-chip">「お金だけ払って終わる自分が見えた」</span>
+        <span class="q-reaction-chip">「三日坊主だから」</span>
+      </div>
+    </div>
   </div>
 
   <!-- Q8 -->
@@ -648,6 +739,14 @@
       <div class="q-sub-item">実際に何か変化や成果はありましたか？</div>
       <div class="q-sub-item">成果が出たとき、自分でどう感じましたか？</div>
       <div class="q-sub-item">入る前の自分と今の自分、何が一番変わりましたか？</div>
+    </div>
+    <div class="q-reactions">
+      <div class="q-reactions-label">💬 出てきやすい言葉</div>
+      <div class="q-reaction-chips">
+        <span class="q-reaction-chip">「私だけ取り残されたら？」</span>
+        <span class="q-reaction-chip">「変わらなかったら恥ずかしい」</span>
+        <span class="q-reaction-chip">「自分が証明されちゃう気がして」</span>
+      </div>
     </div>
   </div>
 
@@ -671,6 +770,14 @@
       <div class="q-sub-item">オンラインなのに"つながってる"と感じた瞬間はありましたか？</div>
       <div class="q-sub-item">コミュニティの中で印象に残った交流はありますか？</div>
     </div>
+    <div class="q-reactions">
+      <div class="q-reactions-label">💬 出てきやすい言葉</div>
+      <div class="q-reaction-chips">
+        <span class="q-reaction-chip">「画面越しって冷たそう」</span>
+        <span class="q-reaction-chip">「結局ひとりじゃん」</span>
+        <span class="q-reaction-chip">「既読スルーされたら終わる」</span>
+      </div>
+    </div>
   </div>
 
   <!-- Q10 -->
@@ -692,6 +799,14 @@
       <div class="q-sub-item">入る前に一番恐れていたことって、実際どうなりましたか？</div>
       <div class="q-sub-item">今、迷ってる人に一番伝えたいことは何ですか？</div>
       <div class="q-sub-item">もし100点満点でこのコミュニティを採点するなら何点ですか？</div>
+    </div>
+    <div class="q-reactions">
+      <div class="q-reactions-label">💬 出てきやすい言葉</div>
+      <div class="q-reaction-chips">
+        <span class="q-reaction-chip">「早く入れよ！！」</span>
+        <span class="q-reaction-chip">「何ビビってんの笑」</span>
+        <span class="q-reaction-chip">「あの不安なんだったの」</span>
+      </div>
     </div>
   </div>
 
@@ -715,6 +830,15 @@
       <div class="q-sub-item">めぐみさんのどんなところが一番刺さりましたか？</div>
       <div class="q-sub-item">めぐみさんがいるコミュニティだから入ろうと思いましたか？それとも別の理由でしたか？</div>
       <div class="q-sub-item">めぐみさんに「この人についていきたい」と思った瞬間はありましたか？</div>
+    </div>
+    <div class="q-reactions">
+      <div class="q-reactions-label">💬 出てきやすい言葉</div>
+      <div class="q-reaction-chips">
+        <span class="q-reaction-chip">「この人すごい！」</span>
+        <span class="q-reaction-chip">「頭キレッキレ！」</span>
+        <span class="q-reaction-chip">「私とは別の生き物？！」</span>
+        <span class="q-reaction-chip">「怖い人だったら嫌だな…」</span>
+      </div>
     </div>
   </div>
 
