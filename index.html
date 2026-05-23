@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>プロジェクトF インタビューガイド</title>
+  <style>
+    :root {
+      --primary: #7C3AED;
+      --primary-light: #EDE9FE;
+      --primary-mid: #A78BFA;
+      --accent: #F59E0B;
+      --accent-light: #FEF3C7;
+      --bg: #F8F7FF;
+      --card: #FFFFFF;
+      --text: #1E1B2E;
+      --sub: #6B7280;
+      --border: #E5E7EB;
+      --selected-bg: #F5F3FF;
+      --selected-border: #7C3AED;
+      --check: #7C3AED;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(135deg, #6D28D9 0%, #7C3AED 50%, #A78BFA 100%);
+      color: #fff;
+      padding: 48px 24px 40px;
+      text-align: center;
+    }
+    .hero .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 999px;
+      padding: 6px 18px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: clamp(22px, 5vw, 32px);
+      font-weight: 800;
+      line-height: 1.35;
+      margin-bottom: 12px;
+    }
+    .hero h1 span { color: #FCD34D; }
+    .hero p {
+      font-size: 15px;
+      opacity: 0.9;
+      line-height: 1.7;
+      max-width: 520px;
+      margin: 0 auto 28px;
+    }
+
+    /* ===== MODE TOGGLE ===== */
+    .mode-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 16px;
+      padding: 12px 20px;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+    .mode-bar .label { font-size: 14px; font-weight: 600; }
+    .toggle-switch {
+      position: relative;
+      width: 52px;
+      height: 28px;
+      cursor: pointer;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-track {
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,0.3);
+      border-radius: 999px;
+      transition: background 0.25s;
+    }
+    .toggle-track::after {
+      content: '';
+      position: absolute;
+      width: 22px; height: 22px;
+      top: 3px; left: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.25s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+    .toggle-switch input:checked + .toggle-track { background: #FCD34D; }
+    .toggle-switch input:checked + .toggle-track::after { transform: translateX(24px); }
+    .mode-hint { font-size: 12px; opacity: 0.8; margin-top: 6px; text-align: center; }
+
+    /* ===== COUNTER BAR ===== */
+    .counter-bar {
+      display: none;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .counter-bar.visible { display: flex; }
+    .counter-info { font-size: 14px; font-weight: 600; color: var(--primary); }
+    .counter-info span { font-size: 22px; }
+    .btn-reset {
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--sub);
+      transition: all 0.2s;
+    }
+    .btn-reset:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-scroll-top {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-scroll-top:hover { background: #6D28D9; }
+
+    /* ===== MAIN ===== */
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 32px 16px 80px;
+    }
+
+    /* ===== QUESTION CARD ===== */
+    .q-card {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.15s;
+    }
+    .q-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,58,237,0.1); }
+    .q-card.selected {
+      border-color: var(--selected-border);
+      background: var(--selected-bg);
+      box-shadow: 0 8px 28px rgba(124,58,237,0.15);
+    }
+
+    .q-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 22px 22px 0;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* number badge */
+    .q-num {
+      flex-shrink: 0;
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, #7C3AED, #A78BFA);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 800;
+      transition: transform 0.2s;
+    }
+    .q-card.selected .q-num { background: linear-gradient(135deg, #5B21B6, #7C3AED); }
+
+    .q-main { flex: 1; }
+    .q-main h2 {
+      font-size: clamp(15px, 2.5vw, 17px);
+      font-weight: 700;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    /* checkbox area */
+    .q-check {
+      flex-shrink: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 30px; height: 30px;
+      margin-top: 4px;
+    }
+    .select-mode .q-check { display: flex; }
+    .q-check .box {
+      width: 26px; height: 26px;
+      border: 2.5px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      background: #fff;
+    }
+    .q-card.selected .q-check .box {
+      background: var(--check);
+      border-color: var(--check);
+    }
+    .q-check .box svg { display: none; }
+    .q-card.selected .q-check .box svg { display: block; }
+
+    /* sub questions */
+    .q-subs {
+      padding: 14px 22px 22px 78px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .q-sub-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 14px;
+      background: #F9F8FF;
+      border-radius: 10px;
+      border-left: 3px solid #DDD6FE;
+      font-size: 14px;
+      color: var(--sub);
+      line-height: 1.6;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .q-card.selected .q-sub-item {
+      background: #EDE9FE;
+      border-left-color: var(--primary-mid);
+      color: #4C1D95;
+    }
+    .q-sub-item::before {
+      content: '↳';
+      color: var(--primary-mid);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ===== SELECT MODE INDICATOR ===== */
+    .select-mode .q-card { cursor: pointer; }
+
+    /* ===== SELECTED SUMMARY PANEL ===== */
+    .summary-panel {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: #fff;
+      border-top: 2px solid var(--primary-light);
+      padding: 16px 20px;
+      z-index: 200;
+      box-shadow: 0 -8px 24px rgba(124,58,237,0.12);
+    }
+    .summary-panel.visible { display: block; }
+    .summary-inner {
+      max-width: 680px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .summary-text { font-size: 14px; color: var(--sub); text-align: center; }
+    .summary-text strong { color: var(--primary); font-size: 17px; }
+
+    /* ===== HANDOFF BUTTON ===== */
+    .btn-handoff {
+      width: 100%;
+      background: linear-gradient(135deg, #EA580C, #F97316);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      padding: 18px;
+      font-size: 17px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 16px rgba(234,88,12,0.35);
+      letter-spacing: 0.5px;
+    }
+    .btn-handoff:hover {
+      background: linear-gradient(135deg, #C2410C, #EA580C);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(234,88,12,0.4);
+    }
+    .btn-handoff:active { transform: translateY(0); }
+
+    /* ===== ACTIVE QUESTION (interviewer highlight) ===== */
+    .q-card.active-question {
+      border-color: #F59E0B;
+      background: linear-gradient(135deg, #FFFBEB, #FEF9C3);
+      box-shadow: 0 0 0 4px rgba(245,158,11,0.2), 0 12px 36px rgba(245,158,11,0.25);
+    }
+    .q-card.active-question .q-num {
+      background: linear-gradient(135deg, #D97706, #F59E0B);
+    }
+    .q-card.active-question h2 { color: #92400E; }
+    .q-card.active-question .q-sub-item {
+      background: #FEF3C7;
+      border-left-color: #F59E0B;
+      color: #78350F;
+    }
+    .active-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #F59E0B;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-top: 4px;
+    }
+
+    /* ===== INTRO CARD ===== */
+    .intro-card {
+      background: linear-gradient(135deg, #FFFBEB, #FEF3C7);
+      border: 2px solid #FDE68A;
+      border-radius: 20px;
+      padding: 22px;
+      margin-bottom: 28px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .intro-icon { font-size: 32px; flex-shrink: 0; }
+    .intro-text h3 { font-size: 15px; font-weight: 700; color: #92400E; margin-bottom: 6px; }
+    .intro-text p { font-size: 14px; color: #78350F; line-height: 1.7; }
+
+    /* ===== NOTE CARD ===== */
+    .note-card {
+      background: #F0FDF4;
+      border: 1.5px solid #86EFAC;
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+      font-size: 14px;
+      color: #166534;
+      line-height: 1.7;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .note-card::before { content: '✅'; flex-shrink: 0; }
+
+    /* section label */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .section-label span {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--sub);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .section-label hr { flex: 1; border: none; border-top: 1px solid var(--border); }
+
+    /* responsive */
+    @media (max-width: 480px) {
+      .q-subs { padding-left: 22px; }
+      .hero { padding: 36px 16px 32px; }
+    }
+
+    /* ===== ORANGE SELECT MODE ===== */
+    body.select-mode {
+      --primary: #EA580C;
+      --primary-light: #FFF7ED;
+      --primary-mid: #FB923C;
+      --selected-bg: #FFF7ED;
+      --selected-border: #F97316;
+      --check: #F97316;
+      background: #FFF7ED;
+    }
+    body.select-mode .hero {
+      background: linear-gradient(135deg, #C2410C 0%, #EA580C 50%, #FB923C 100%);
+    }
+    body.select-mode .q-num {
+      background: linear-gradient(135deg, #EA580C, #FB923C);
+    }
+    body.select-mode .q-card.selected .q-num {
+      background: linear-gradient(135deg, #C2410C, #EA580C);
+    }
+    body.select-mode .btn-scroll-top {
+      background: #F97316;
+    }
+    body.select-mode .btn-scroll-top:hover {
+      background: #EA580C;
+    }
+    body.select-mode .toggle-switch input:checked + .toggle-track {
+      background: #FB923C;
+    }
+    body.select-mode .q-card:hover {
+      box-shadow: 0 8px 24px rgba(234,88,12,0.12);
+    }
+    body.select-mode .q-card.selected {
+      box-shadow: 0 8px 28px rgba(234,88,12,0.18);
+    }
+    body.select-mode .q-subs {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="badge">🎬 Project F × Instagram Reels</div>
+  <h1>インタビュー<span>ガイド</span></h1>
+  <p>リール用の動画インタビューです。<br>飾らずリアルな言葉で話してもらえると嬉しいです😊</p>
+
+  <div class="mode-bar">
+    <span class="label">📋 話したい質問を選ぶモード</span>
+    <label class="toggle-switch">
+      <input type="checkbox" id="selectToggle" />
+      <span class="toggle-track"></span>
+    </label>
+  </div>
+  <div class="mode-hint" id="modeHint">オフ：インタビュアー向け全問表示</div>
+</header>
+
+<!-- ===== STICKY COUNTER ===== -->
+<div class="counter-bar" id="counterBar">
+  <div class="counter-info" id="counterInfo">話したい質問を選んでください</div>
+  <div style="display:flex;gap:8px">
+    <button class="btn-reset" onclick="resetAll()">リセット</button>
+    <button class="btn-scroll-top" onclick="scrollToTop()">▲ トップへ</button>
+  </div>
+</div>
+
+<!-- ===== MAIN ===== -->
+<main class="container" id="mainContainer">
+
+  <div class="intro-card">
+    <div class="intro-icon">🎤</div>
+    <div class="intro-text">
+      <h3>インタビューご協力ありがとうございます！</h3>
+      <p>リール用の動画なので、ぜひ<strong>飾らずリアルな言葉</strong>で答えてもらえると嬉しいです😊</p>
+    </div>
+  </div>
+
+
+  <div class="section-label">
+    <span>質問一覧 / 11問</span>
+    <hr />
+  </div>
+
+  <!-- Q1 -->
+  <div class="q-card" data-q="1">
+    <div class="q-header" onclick="toggleCard(this)">
+      <div class="q-num">①</div>
+      <div class="q-main">
+        <h2>金額を初めて見た瞬間、<br>正直何て思いましたか？</h2>
+      </div>
+      <div class="q-check">
+        <div class="box">
+          <svg width="14" height="11" viewBox="0 0 14 11" fill="none">
+            <path d="M1 5L5.5 9.5L13 1" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="q-subs">
+      <div class="q-sub-item">その金額、今はどう感じてますか？</div>
+      <div class="q-sub-item">入ってみて、元は取れた感覚ありますか？</div>
+      <div class="q-sub-item">もし入ってなかったら、今どうなってたと思いますか？</div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card" data-q="2">
+    <div class="q-header" onclick="toggleCard(this)">
+      <div class="q-num">②</div>
+      <div class="q-main">
+        <h2>申し込みボタンを押す直前、<br>何秒悩みましたか？</h2>
+      </div>
+      <div class="q-check">
+        <div class="box">
+          <svg width="14" height="11" viewBox="0 0 14 11" fill="none">
+            <path d="M1 5L5.5 9.5L13 1" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="q-subs">
+      <div class="q-sub-item">押せた決め手って何でしたか？</div>
+      <div class="q-sub-item">入った今、あの決断を後悔してますか？</div>
+      <div class="q-sub-item">背中を押してくれたものって何でしたか？</div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card" data-q="3">
+    <div class="q-header" onclick="toggleCard(this)">
+      <div class="q-num">③</div>
+      <div class="q-main">
+        <h2>入る前、"こんな人が来るコミュニティじゃないかも"<br>って思いましたか？</h2>
+      </div>
+      <div class="q-check">
+        <div class="box">
+          <svg width="14" height="11" viewBox="0 0 14 11" fill="none">
+            <path d="M1 5L5.5 9.5L13 1" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="q-subs">
+      <div class="q-sub-item">実際入ってみてメンバーはどんな人たちでしたか？</div>
+      <div class="q-sub-item">自分のレベルでもついていけましたか？</div>
+      <div class="q-sub-item">今、コミュニティの中での自分の立ち位置ってどう感じてますか？</div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card" data-q="4">
+    <div class="q-header" onclick="toggleCard(this)">
+      <div class="q-num">④</div>
+      <div class="q-main">
+        <h2>入金後、「やっちまった」と<br>思った瞬間はありましたか？</h2>
+      </div>
+      <div class="q-check">
+        <div class="box">
+          <svg width="14" height="11" viewBox="0 0 14 11" fill="none">
+            <path d="M1 5L5.5 9.5L13 1" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="q-subs">
+      <div class="q-sub-item">不安が消えたのってどのタイミングでしたか？</div>
+      <div class="q-sub-item">入って最初に「あ、本物だ」と思った瞬間はありましたか？</div>
+      <div class="q-sub-item">今、誰かに勧めたいと思いますか？</div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card" data-q="5">
+    <div class="q-header" onclick="toggleCard(this)">
+      <div class="q-num">⑤</div>
+      <div class="q-main">
+        <h2>周りの人（家族・友人）に<br>入ることを言えましたか？</h2>
+      </div>
+      <div class="q-check">
+        <div class="box">
+          <svg width="14" height="11" viewBox="0 0 14 11" fill="none">
+            <path d="M1 5L5.5 9.5L13 1" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="q-subs">
+      <div class="q-sub-item">今は話せてますか？反応はどうでしたか？</div>
+      <div class="q-sub-item">成果が出たとき、周りの反応は変わりましたか？</div>
+      <div class="q-sub-item">入ってよかったと、自分で納得できてますか？</div>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-card" data-q="6">
+    <div class="q-header" onclick="toggleCard(this)">
+      <div class="q-num">⑥</div>
+      <div class="q-main">
+        <h2>コミュニティって"意識高い系の集まり"で<br>疲れそう、と思いませんでしたか？</h2>
+      </div>
+      <div class="q-check">
+        <div class="box">
+          <svg width="14" height="11" viewBox="0 0 14 11" fill="none">
+            <path d="M1 5L5.5 9.5L13 1" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="q-subs">
+      <div class="q-sub-item">実際のコミュニティの雰囲気ってどうでしたか？</div>
+      <div class="q-sub-item">メンバーとの関係で印象に残ってることはありますか？</div>
+      <div class="q-sub-item">居心地って実際どうですか？</div>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q-card" data-q="7">
+    <div class="q-header" onclick="toggleCard(this)">
+      <div class="q-num">⑦</div>
+      <div class="q-main">
+        <h2>入ったはいいけど、<br>続けられるか不安でしたか？</h2>
+      </div>
+      <div class="q-check">
+        <div class="box">
+          <svg width="14" height="11" viewBox="0 0 14 11" fill="none">
+            <path d="M1 5L5.5 9.5L13 1" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="q-subs">
+      <div class="q-sub-item">実際、どのくらい参加できてますか？</div>
+      <div class="q-sub-item">続けられている理由って何だと思いますか？</div>
+      <div class="q-sub-item">コミュニティのどんな仕組みが自分を動かしてくれましたか？</div>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q-card" data-q="8">
+    <div class="q-header" onclick="toggleCard(this)">
+      <div class="q-num">⑧</div>
+      <div class="q-main">
+        <h2>成果が出なかったらどうしようと<br>怖くなりましたか？</h2>
+      </div>
+      <div class="q-check">
+        <div class="box">
+          <svg width="14" height="11" viewBox="0 0 14 11" fill="none">
+            <path d="M1 5L5.5 9.5L13 1" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="q-subs">
+      <div class="q-sub-item">実際に何か変化や成果はありましたか？</div>
+      <div class="q-sub-item">成果が出たとき、自分でどう感じましたか？</div>
+      <div class="q-sub-item">入る前の自分と今の自分、何が一番変わりましたか？</div>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="q-card" data-q="9">
+    <div class="q-header" onclick="toggleCard(this)">
+      <div class="q-num">⑨</div>
+      <div class="q-main">
+        <h2>オンラインのコミュニティって<br>馴染めるか不安じゃなかったですか？</h2>
+      </div>
+      <div class="q-check">
+        <div class="box">
+          <svg width="14" height="11" viewBox="0 0 14 11" fill="none">
+            <path d="M1 5L5.5 9.5L13 1" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="q-subs">
+      <div class="q-sub-item">実際、メンバーとのつながりってありますか？</div>
+      <div class="q-sub-item">オンラインなのに"つながってる"と感じた瞬間はありましたか？</div>
+      <div class="q-sub-item">コミュニティの中で印象に残った交流はありますか？</div>
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="q-card" data-q="10">
+    <div class="q-header" onclick="toggleCard(this)">
+      <div class="q-num">⑩</div>
+      <div class="q-main">
+        <h2>今、入る前の自分に<br>一言言うとしたら？</h2>
+      </div>
+      <div class="q-check">
+        <div class="box">
+          <svg width="14" height="11" viewBox="0 0 14 11" fill="none">
+            <path d="M1 5L5.5 9.5L13 1" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="q-subs">
+      <div class="q-sub-item">入る前に一番恐れていたことって、実際どうなりましたか？</div>
+      <div class="q-sub-item">今、迷ってる人に一番伝えたいことは何ですか？</div>
+      <div class="q-sub-item">もし100点満点でこのコミュニティを採点するなら何点ですか？</div>
+    </div>
+  </div>
+
+  <!-- Q11 -->
+  <div class="q-card" data-q="11">
+    <div class="q-header" onclick="toggleCard(this)">
+      <div class="q-num">⑪</div>
+      <div class="q-main">
+        <h2>初めてめぐみさんを見た時の<br>印象は？</h2>
+      </div>
+      <div class="q-check">
+        <div class="box">
+          <svg width="14" height="11" viewBox="0 0 14 11" fill="none">
+            <path d="M1 5L5.5 9.5L13 1" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="q-subs">
+      <div class="q-sub-item">実際に関わってみて、印象は変わりましたか？</div>
+      <div class="q-sub-item">めぐみさんのどんなところが一番刺さりましたか？</div>
+      <div class="q-sub-item">めぐみさんがいるコミュニティだから入ろうと思いましたか？それとも別の理由でしたか？</div>
+      <div class="q-sub-item">めぐみさんに「この人についていきたい」と思った瞬間はありましたか？</div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ===== SUMMARY PANEL ===== -->
+<div class="summary-panel" id="summaryPanel">
+  <div class="summary-inner">
+    <div class="summary-text" id="summaryText">
+      <strong id="summaryQLabel"></strong> を選択中
+    </div>
+    <button class="btn-handoff" onclick="handoffToInterviewer()">
+      🎤 インタビュアーに渡す →
+    </button>
+  </div>
+</div>
+
+<script>
+  const selectToggle   = document.getElementById('selectToggle');
+  const mainContainer  = document.getElementById('mainContainer');
+  const counterBar     = document.getElementById('counterBar');
+  const counterInfo    = document.getElementById('counterInfo');
+  const summaryPanel   = document.getElementById('summaryPanel');
+  const summaryQLabel  = document.getElementById('summaryQLabel');
+  const modeHint       = document.getElementById('modeHint');
+
+  let isSelectMode = false;
+
+  // ── モード切替 ────────────────────────────────
+  selectToggle.addEventListener('change', () => {
+    isSelectMode = selectToggle.checked;
+    if (isSelectMode) {
+      // 選択モードON
+      document.querySelectorAll('.q-card.active-question').forEach(c => {
+        c.classList.remove('active-question');
+        c.querySelector('.active-badge')?.remove();
+      });
+      mainContainer.classList.add('select-mode');
+      document.body.classList.add('select-mode');
+      modeHint.textContent = 'オン：話したい質問をタップして選択';
+      counterBar.classList.add('visible');
+      updateSummary();
+    } else {
+      // 選択モードOFF
+      clearSelections();
+      mainContainer.classList.remove('select-mode');
+      document.body.classList.remove('select-mode');
+      modeHint.textContent = 'オフ：インタビュアー向け全問表示';
+      counterBar.classList.remove('visible');
+      summaryPanel.classList.remove('visible');
+    }
+  });
+
+  // ── カードタップ（1問だけ選択） ──────────────────
+  function toggleCard(headerEl) {
+    if (!isSelectMode) return;
+    const card = headerEl.closest('.q-card');
+    const wasSelected = card.classList.contains('selected');
+
+    // 全解除（ラジオボタン的動作）
+    clearSelections();
+
+    // 別の質問をタップした場合だけ選択
+    if (!wasSelected) {
+      card.classList.add('selected');
+    }
+    updateSummary();
+  }
+
+  // ── 選択状態の更新 ─────────────────────────────
+  function updateSummary() {
+    const selected = document.querySelector('.q-card.selected');
+    if (selected && isSelectMode) {
+      const q = selected.dataset.q;
+      const title = selected.querySelector('h2').textContent.replace(/\n/g, '');
+      counterInfo.textContent = `Q${q} を選択中`;
+      summaryQLabel.textContent = `Q${q}`;
+      summaryPanel.classList.add('visible');
+    } else {
+      counterInfo.textContent = '話したい質問を選んでください';
+      summaryPanel.classList.remove('visible');
+    }
+  }
+
+  // ── インタビュアーに渡す ──────────────────────
+  function handoffToInterviewer() {
+    const selected = document.querySelector('.q-card.selected');
+    if (!selected) return;
+
+    // インタビュアーモードに切替
+    selectToggle.checked = false;
+    isSelectMode = false;
+    mainContainer.classList.remove('select-mode');
+    document.body.classList.remove('select-mode');
+    modeHint.textContent = 'オフ：インタビュアー向け全問表示';
+    counterBar.classList.remove('visible');
+    summaryPanel.classList.remove('visible');
+
+    // 選択ハイライトをアクティブバッジに昇格
+    selected.classList.remove('selected');
+    selected.classList.add('active-question');
+
+    // バッジを追加（まだなければ）
+    if (!selected.querySelector('.active-badge')) {
+      const badge = document.createElement('span');
+      badge.className = 'active-badge';
+      badge.textContent = '🎤 この質問に答えます';
+      selected.querySelector('.q-main').appendChild(badge);
+    }
+
+    // その質問へスクロール
+    setTimeout(() => {
+      selected.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 150);
+  }
+
+  // ── リセット ─────────────────────────────────
+  function clearSelections() {
+    document.querySelectorAll('.q-card.selected').forEach(c => c.classList.remove('selected'));
+  }
+
+  function resetAll() {
+    clearSelections();
+    updateSummary();
+  }
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
